@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 3
+%define release	%mkrel 4
 %define	version	0.6.5
 
 %define jail 0
