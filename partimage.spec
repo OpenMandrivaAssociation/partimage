@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 4
+%define release	%mkrel 5
 %define	version	0.6.5
 
 %define jail 0
@@ -19,12 +19,14 @@ Source4:	genCertificate
 Source5:	partimaged-init.d
 Patch0: 	%{name}-slang.patch
 Patch1: 	partimage-0.6.5-chown.patch
-Patch6:		partimage-0.6.4-varargs.patch
-Patch7:		partimage-0.6.4-dont-discard-error-message-in-batch-mode.patch
-Patch8:		partimage-0.6.5-save_file_and_rest_file_actions.patch
+Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
+Patch6: 	partimage-0.6.4-varargs.patch
+Patch7: 	partimage-0.6.4-dont-discard-error-message-in-batch-mode.patch
+Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
 Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
+BuildRequires:	gettext-devel
 BuildRequires:	newt-devel
 BuildRequires:	openssl
 BuildRequires:	openssl-devel
@@ -54,6 +56,7 @@ installation is automatically made, and only require a few minutes.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 %patch6 -p1
 %patch7 -p1
 %if %{jail}
@@ -69,6 +72,7 @@ opts="--disable-login --disable-ssl"
 opts=
 %endif
 
+cp %{_datadir}/gettext/config.rpath .
 autoreconf # needed on 2007.0
 %configure $opts
 %make
