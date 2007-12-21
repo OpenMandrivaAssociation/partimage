@@ -23,6 +23,7 @@ Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
 Patch6: 	partimage-0.6.4-varargs.patch
 Patch7: 	partimage-0.6.4-dont-discard-error-message-in-batch-mode.patch
 Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
+Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
