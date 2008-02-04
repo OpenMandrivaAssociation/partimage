@@ -1,6 +1,6 @@
 %define	name	partimage 
-%define release	%mkrel 5
-%define	version	0.6.5
+%define release	%mkrel 1
+%define	version	0.6.7
 
 %define jail 0
 %{?_with_jail: %{expand: %%global jail 1}}
@@ -18,10 +18,8 @@ Source3:	partimagedusers.5
 Source4:	genCertificate
 Source5:	partimaged-init.d
 Patch0: 	%{name}-slang.patch
-Patch1: 	partimage-0.6.5-chown.patch
+Patch1: 	partimage-0.6.7-chown.patch
 Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
-Patch6: 	partimage-0.6.4-varargs.patch
-Patch7: 	partimage-0.6.4-dont-discard-error-message-in-batch-mode.patch
 Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
 Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	automake1.8
@@ -57,8 +55,6 @@ installation is automatically made, and only require a few minutes.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch6 -p1
-%patch7 -p1
 %if %{jail}
 %patch8 -p1
 %endif
