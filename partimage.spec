@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 1
+%define release	%mkrel 2
 %define	version	0.6.7
 
 %define jail 0
@@ -9,19 +9,19 @@ Summary: 	Partition Image
 Name: 		%{name}
 Version: 	%{version}
 Release: 	%{release}
+URL: 		http://www.partimage.org/
 License: 	GPL
 Group: 		Archiving/Backup
 Source: 	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
 Source3:	partimagedusers.5
-Source4:	genCertificate
 Source5:	partimaged-init.d
 Patch0: 	%{name}-slang.patch
 Patch1: 	partimage-0.6.7-chown.patch
 Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
+Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
-Buildroot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -29,8 +29,10 @@ BuildRequires:	newt-devel
 BuildRequires:	openssl
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
+BuildRequires:	rpm-helper >= 0.21
 Requires:	openssl > 0.9.6
-URL: 		http://www.partimage.org/
+Requires(post): rpm-helper >= 0.21
+Buildroot: 	%{_tmppath}/%{name}-%{version}
 
 %description
 - Partition Image is a Linux/UNIX partition imaging utility: it saves
@@ -55,6 +57,7 @@ installation is automatically made, and only require a few minutes.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 %if %{jail}
 %patch8 -p1
 %endif
@@ -85,8 +88,6 @@ install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
 %if %{jail}
 rm -rf %{buildroot}%{_sysconfdir}/partimaged
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
-%else
-install -m755 %{SOURCE4} -D %{buildroot}%{_datadir}/%{name}/partimaged/genCertificate
 %endif
 
 %find_lang %{name}
@@ -111,8 +112,7 @@ fi
 %_post_service partimaged
 
 %else
-echo "Note:"
-echo "Don't forget to create your SSL certificate by running %{_datadir}/%{name}/partimaged/genCertificate"
+%_create_ssl_certificate partimage -g partimag
 %endif
 
 %if %{jail}
@@ -133,10 +133,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_initrddir}/partimaged
 %else
 %attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
-%attr(0755,partimag,partimag) %{_datadir}/%{name}/partimaged/genCertificate
 %endif
-%attr(0644,root,root) %{_mandir}/man1/partimage.1*
-%attr(0644,root,root) %{_mandir}/man5/partimagedusers.5*
-%attr(0644,root,root) %{_mandir}/man8/partimaged.8*
+%{_mandir}/man1/partimage.1*
+%{_mandir}/man5/partimagedusers.5*
+%{_mandir}/man8/partimaged.8*
 
 
