@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 3
+%define release	%mkrel 4
 %define	version	0.6.7
 
 %define jail 0
@@ -22,6 +22,7 @@ Patch1: 	partimage-0.6.7-chown.patch
 Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch4: 	partimage-0.6.7-set-effective-gid.patch
+Patch5:		partimage-0.6.7-gcc43.patch
 Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
@@ -60,6 +61,7 @@ installation is automatically made, and only require a few minutes.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
 %if %{jail}
 %patch8 -p1
 %endif
