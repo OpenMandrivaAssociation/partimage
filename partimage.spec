@@ -37,7 +37,7 @@ Requires(post): rpm-helper >= 0.21
 Buildroot: 	%{_tmppath}/%{name}-%{version}
 
 %description
-- Partition Image is a Linux/UNIX partition imaging utility: it saves
+Partition Image is a Linux/UNIX partition imaging utility: it saves
 partitions in the Ext2FS (the linux standard), ReiserFS (a new 
 journalized and powerful file system), NTFS (Windows NT File System)
 or FAT16/32 (DOS & Windows file systems), file system formats to an 
@@ -45,11 +45,13 @@ image file. Only used blocks are copied. The image file can be
 compressed in the GZIP/BZIP2 formats to save disk space, and splitted 
 into multiple files to be copied on amovibles floppies (ZIP for example),
 or burned on a CD-R ...
-- This allows to save a full Linux/Windows system, with an only 
+
+This allows to save a full Linux/Windows system, with an only 
 operation. When problems (viruses, crash, error, ...), you just have to 
 restore, and after several minutes, all your system is restored (boot, 
 files, ...), and fully working.
-- This is very useful when installing the same software on many 
+
+This is very useful when installing the same software on many 
 machines: just install one of them, creat|e an image, and just restore 
 the image on all other machines. Then, after the first one, each 
 installation is automatically made, and only require a few minutes.
