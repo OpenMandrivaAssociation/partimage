@@ -41,7 +41,7 @@ Partition Image is a Linux/UNIX partition imaging utility: it saves
 partitions in the following file system formats to an image file:
 - Ext2FS (the linux standard),
 - FAT16/32 (DOS & Windows file systems),
-- NTFS (Windows NT File System)
+- NTFS (Windows NT File System),
 - ReiserFS (a journalized and powerful file system),
 
 Only used blocks are copied. The image file can be 
