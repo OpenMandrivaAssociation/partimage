@@ -39,10 +39,15 @@ Buildroot: 	%{_tmppath}/%{name}-%{version}
 %description
 Partition Image is a Linux/UNIX partition imaging utility: it saves
 partitions in the following file system formats to an image file:
-- Ext2FS (the linux standard),
+- Ext2FS & Ext3FS (the linux standard),
 - FAT16/32 (DOS & Windows file systems),
+- HFS (MacOS File System),
+- JFS (Journalised File System, from IBM, used on Aix),
 - NTFS (Windows NT File System),
+- HPFS (IBM OS/2 File System),
 - ReiserFS (a journalized and powerful file system),
+- UFS (Unix File System),
+- XFS (another jounalized and efficient File System, from SGI, used on Irix),
 
 Only used blocks are copied. The image file can be 
 compressed in the GZIP/BZIP2 formats to save disk space, and splitted 
