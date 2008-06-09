@@ -42,7 +42,7 @@ partitions in the following file system formats to an image file:
 - Ext2FS (the linux standard),
 - FAT16/32 (DOS & Windows file systems),
 - NTFS (Windows NT File System)
-- ReiserFS (a new journalized and powerful file system),
+- ReiserFS (a journalized and powerful file system),
 
 Only used blocks are copied. The image file can be 
 compressed in the GZIP/BZIP2 formats to save disk space, and splitted 
