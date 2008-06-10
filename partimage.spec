@@ -24,6 +24,7 @@ Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch4: 	partimage-0.6.7-set-effective-gid.patch
 Patch5:		partimage-0.6.7-gcc43.patch
 Patch8: 	partimage-0.6.7-save_file_and_rest_file_actions.patch
+Patch9:		partimage-0.6.7-nossl.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -75,6 +76,7 @@ installation is automatically made, and only require a few minutes.
 %if %{jail}
 %patch8 -p1 -b .save_rest_file
 %endif
+%patch9 -p1 -b .nossl
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
