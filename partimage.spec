@@ -84,7 +84,7 @@ autoreconf # needed on 2007.0
 %make
 
 %install
-rm -rf  $RPM_BUILD_ROOT
+rm -rf  %{buildroot}
 %makeinstall
 
 rm -rf %{buildroot}%{_infodir}/*
@@ -117,7 +117,7 @@ fi
 %_preun_service partimaged
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr (-,root,root)
@@ -130,5 +130,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/partimage.1*
 %{_mandir}/man5/partimagedusers.5*
 %{_mandir}/man8/partimaged.8*
-
-
