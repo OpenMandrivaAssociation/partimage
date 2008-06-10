@@ -2,9 +2,6 @@
 %define release	%mkrel 5
 %define	version	0.6.7
 
-%define jail 0
-%{?_with_jail: %{expand: %%global jail 1}}
-
 Summary: 	Partition Image
 Name: 		%{name}
 Version: 	%{version}
