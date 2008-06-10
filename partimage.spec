@@ -25,6 +25,7 @@ Patch4: 	partimage-0.6.7-set-effective-gid.patch
 Patch5:		partimage-0.6.7-gcc43.patch
 Patch8: 	partimage-0.6.7-save_file_and_rest_file_actions.patch
 Patch9:		partimage-0.6.7-nossl.patch
+Patch10:	partimage-0.6.7-nologin.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -77,6 +78,7 @@ installation is automatically made, and only require a few minutes.
 %patch8 -p1 -b .save_rest_file
 %endif
 %patch9 -p1 -b .nossl
+%patch10 -p1 -b .nologin
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
