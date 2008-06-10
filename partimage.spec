@@ -81,15 +81,9 @@ installation is automatically made, and only require a few minutes.
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
 %build
-%if %{jail}
-opts="--disable-login --disable-ssl"
-%else
-opts=
-%endif
-
 cp %{_datadir}/gettext/config.rpath .
 autoreconf # needed on 2007.0
-%configure $opts
+%configure
 %make
 
 %install
