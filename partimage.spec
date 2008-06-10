@@ -74,9 +74,7 @@ installation is automatically made, and only require a few minutes.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%if %{jail}
 %patch8 -p1 -b .save_rest_file
-%endif
 %patch9 -p1 -b .nossl
 %patch10 -p1 -b .nologin
 
