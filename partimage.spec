@@ -96,7 +96,6 @@ install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
 install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
 %if %{jail}
-rm -rf %{buildroot}%{_sysconfdir}/partimaged
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 %endif
 
@@ -141,9 +140,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/*
 %if %{jail}
 %{_initrddir}/partimaged
-%else
-%attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
 %endif
+%attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
 %{_mandir}/man1/partimage.1*
 %{_mandir}/man5/partimagedusers.5*
 %{_mandir}/man8/partimaged.8*
