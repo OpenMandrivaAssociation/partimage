@@ -23,7 +23,7 @@ Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch4: 	partimage-0.6.7-set-effective-gid.patch
 Patch5:		partimage-0.6.7-gcc43.patch
-Patch8: 	partimage-0.6.5-save_file_and_rest_file_actions.patch
+Patch8: 	partimage-0.6.7-save_file_and_rest_file_actions.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -73,7 +73,7 @@ installation is automatically made, and only require a few minutes.
 %patch4 -p1
 %patch5 -p1
 %if %{jail}
-%patch8 -p1
+%patch8 -p1 -b .save_rest_file
 %endif
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
