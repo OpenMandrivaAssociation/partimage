@@ -119,10 +119,8 @@ fi
 # now all you have to do is run partimaged -D --chroot /var/lib/partimage
 
 %_post_service partimaged
-
-%else
-%_create_ssl_certificate partimage -g partimag
 %endif
+%_create_ssl_certificate partimage -g partimag
 
 %if %{jail}
 %preun
