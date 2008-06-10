@@ -95,9 +95,7 @@ rm -rf %{buildroot}%{_infodir}/*
 install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
 install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
-%if %{jail}
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
-%endif
 
 %find_lang %{name}
 
@@ -106,8 +104,6 @@ install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 /usr/sbin/useradd -g partimag -d /home/partimag -r -s /bin/bash partimag > /dev/null 2>&1 ||:
 
 %post
-
-%if %{jail}
 dir=/var/lib/partimage
 if [ ! -d $dir ]; then 
     mkdir -p $dir/{dev,etc,%_lib,var/log}
@@ -117,15 +113,11 @@ if [ ! -d $dir ]; then
     install -d -o partimag $dir/data
 fi
 # now all you have to do is run partimaged -D --chroot /var/lib/partimage
-
 %_post_service partimaged
-%endif
 %_create_ssl_certificate partimage -g partimag
 
-%if %{jail}
 %preun
 %_preun_service partimaged
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -136,9 +128,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc FORMAT FUTURE README README.partimaged 
 %doc THANKS TODO
 %{_sbindir}/*
-%if %{jail}
 %{_initrddir}/partimaged
-%endif
 %attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
 %{_mandir}/man1/partimage.1*
 %{_mandir}/man5/partimagedusers.5*
