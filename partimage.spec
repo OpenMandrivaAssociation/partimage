@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 6
+%define release	%mkrel 7
 %define	version	0.6.7
 
 Summary: 	Partition Image
@@ -94,6 +94,19 @@ install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
 install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 
+cat > REAME.mdv <<EOF
+Mandriva RPM specific notes
+
+setup
+-----
+In order to comply with Mandriva SSL certificates policy, partimage binary has
+been modified to use the following files:
+- /etc/pki/tls/certs/partimage.pem instead of default
+  /etc/partimaged/partimaged.cert
+- /etc/pki/tls/private/partimage.pem instead of default
+  /etc/partimaged/partimaged.key
+EOF
+
 %find_lang %{name}
 
 %pre
@@ -122,7 +135,7 @@ rm -rf %{buildroot}
 %files -f %{name}.lang
 %defattr (-,root,root)
 %doc BOOT-ROOT.txt BUGS AUTHORS ABOUT-NLS COPYING ChangeLog
-%doc FORMAT FUTURE README README.partimaged 
+%doc FORMAT FUTURE README README.partimaged README.mdv
 %doc THANKS TODO
 %{_sbindir}/*
 %{_initrddir}/partimaged
