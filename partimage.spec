@@ -94,7 +94,7 @@ install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
 install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 
-cat > REAME.mdv <<EOF
+cat > README.mdv <<EOF
 Mandriva RPM specific notes
 
 setup
