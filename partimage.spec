@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 7
+%define release	%mkrel 8
 %define	version	0.6.7
 
 Summary: 	Partition Image
