@@ -25,6 +25,7 @@ Patch9:		partimage-0.6.7-nossl.patch
 Patch10:	partimage-0.6.7-nologin.patch
 Patch11:	partimage-0.6.7-inttypes.patch
 Patch12:	partimage-0.6.4-lzma.patch
+Patch13:	partimage-0.6.7-splash.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -79,6 +80,7 @@ installation is automatically made, and only require a few minutes.
 %patch10 -p1 -b .nologin
 %patch11 -p1 -b .inttypes
 %patch12 -p1 -b .lzma
+%patch13 -p1 -b .splash
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
