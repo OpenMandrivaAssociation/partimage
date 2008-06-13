@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 8
+%define release	%mkrel 9
 %define	version	0.6.7
 
 Summary: 	Partition Image
@@ -13,6 +13,7 @@ Source: 	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
 Source3:	partimagedusers.5
+Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
 Patch0: 	%{name}-slang.patch
 Patch1: 	partimage-0.6.7-chown.patch
@@ -99,6 +100,7 @@ rm -rf %{buildroot}%{_infodir}/*
 install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
 install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
+install -m644 %{SOURCE4} -D %{buildroot}%{_sysconfdir}/sysconfig/partimaged
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 
 cat > README.mdv <<EOF
@@ -145,6 +147,7 @@ rm -rf %{buildroot}
 %doc FORMAT FUTURE README README.partimaged README.mdv
 %doc THANKS TODO
 %{_sbindir}/*
+%{_sysconfdir}/sysconfig/partimaged
 %{_initrddir}/partimaged
 %attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
 %{_mandir}/man1/partimage.1*
