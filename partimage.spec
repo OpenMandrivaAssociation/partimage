@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 9
+%define release	%mkrel 10
 %define	version	0.6.7
 
 Summary: 	Partition Image
@@ -27,6 +27,7 @@ Patch10:	partimage-0.6.7-nologin.patch
 Patch11:	partimage-0.6.7-inttypes.patch
 Patch12:	partimage-0.6.4-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
+Patch14:	partimage-0.6.7-setegid.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -82,6 +83,7 @@ installation is automatically made, and only require a few minutes.
 %patch11 -p1 -b .inttypes
 %patch12 -p1 -b .lzma
 %patch13 -p1 -b .splash
+%patch14 -p1 -b .setegid
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
