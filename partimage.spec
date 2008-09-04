@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 10
+%define release	%mkrel 11
 %define	version	0.6.7
 
 Summary: 	Partition Image
@@ -131,6 +131,7 @@ if [ ! -d $dir ]; then
     cp -a /dev/{null,tty} $dir/dev
     cp /%_lib/{libnss_compat.so.2,libnss_files.so.2} $dir/%_lib
     grep partimag /etc/passwd > $dir/etc/passwd
+    grep partimag /etc/group > $dir/etc/group
     install -d -o partimag $dir/data
 fi
 # now all you have to do is run partimaged -D --chroot /var/lib/partimage
