@@ -23,7 +23,7 @@ Patch14:	partimage-0.6.8-format-security.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
-BuildRequires:	lzma-devel
+BuildRequires:	liblzmadec-devel
 BuildRequires:	newt-devel
 BuildRequires:	openssl
 BuildRequires:	openssl-devel
