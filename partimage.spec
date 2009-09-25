@@ -1,6 +1,6 @@
 %define	name	partimage 
 %define release	%mkrel 12
-%define	version	0.6.7
+%define	version	0.6.8
 
 Summary: 	Partition Image
 Name: 		%{name}
@@ -15,19 +15,11 @@ Source2:	partimaged.8
 Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
-Patch0: 	%{name}-slang.patch
 Patch1: 	partimage-0.6.7-chown.patch
-Patch2: 	partimage-0.6.5-deb_disable_header_check.patch
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
-Patch4: 	partimage-0.6.7-set-effective-gid.patch
-Patch5:		partimage-0.6.7-gcc43.patch
-Patch8: 	partimage-0.6.7-save_file_and_rest_file_actions.patch
-Patch9:		partimage-0.6.7-nossl.patch
-Patch10:	partimage-0.6.7-nologin.patch
-Patch11:	partimage-0.6.7-inttypes.patch
-Patch12:	partimage-0.6.4-lzma.patch
+Patch12:	partimage-0.6.8-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
-Patch14:	partimage-0.6.7-setegid.patch
+Patch14:	partimage-0.6.8-format-security.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -71,19 +63,11 @@ installation is automatically made, and only require a few minutes.
 
 %prep
 %setup -q
-%patch0 -p1
 %patch1 -p1
-%patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch8 -p1 -b .save_rest_file
-%patch9 -p1 -b .nossl
-%patch10 -p1 -b .nologin
-%patch11 -p1 -b .inttypes
 %patch12 -p1 -b .lzma
 %patch13 -p1 -b .splash
-%patch14 -p1 -b .setegid
+%patch14 -p1 -b .strfmt
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
