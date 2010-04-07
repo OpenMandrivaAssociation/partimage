@@ -1,5 +1,5 @@
 %define	name	partimage 
-%define release	%mkrel 2
+%define release	%mkrel 3
 %define	version	0.6.8
 
 Summary: 	Partition Image
@@ -20,6 +20,7 @@ Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch12:	partimage-0.6.8-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.8-format-security.patch
+Patch15:	partimage-0.6.8-gcc44.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -68,18 +69,19 @@ installation is automatically made, and only require a few minutes.
 %patch12 -p1 -b .lzma
 %patch13 -p1 -b .splash
 %patch14 -p1 -b .strfmt
+%patch15 -p1 -b .gcc
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
 %build
 cp %{_datadir}/gettext/config.rpath .
-autoreconf # needed on 2007.0
-%configure
+autoreconf -fi
+%configure2_5x
 %make
 
 %install
 rm -rf  %{buildroot}
-%makeinstall
+%makeinstall_std
 
 rm -rf %{buildroot}%{_infodir}/*
 
