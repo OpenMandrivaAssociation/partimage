@@ -1,11 +1,7 @@
-%define	name	partimage 
-%define release	%mkrel 5
-%define	version	0.6.8
-
 Summary: 	Partition Image
-Name: 		%{name}
-Version: 	%{version}
-Release: 	%{release}
+Name: 		partimage
+Version: 	0.6.9
+Release: 	%mkrel 1
 URL: 		http://www.partimage.org/
 License: 	GPL
 Group: 		Archiving/Backup
@@ -32,7 +28,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	rpm-helper >= 0.21
 Requires:	openssl > 0.9.6
 Requires(post): rpm-helper >= 0.21
-Buildroot: 	%{_tmppath}/%{name}-%{version}
 
 %description
 Partition Image is a Linux/UNIX partition imaging utility: it saves
@@ -75,7 +70,6 @@ for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
 %build
 cp %{_datadir}/gettext/config.rpath .
-autoreconf -fi
 %configure2_5x
 %make
 
