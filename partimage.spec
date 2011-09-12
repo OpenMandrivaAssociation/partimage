@@ -11,12 +11,9 @@ Source2:	partimaged.8
 Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
-Patch1: 	partimage-0.6.7-chown.patch
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch12:	partimage-0.6.8-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
-Patch14:	partimage-0.6.8-format-security.patch
-Patch15:	partimage-0.6.8-gcc44.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -59,12 +56,9 @@ installation is automatically made, and only require a few minutes.
 
 %prep
 %setup -q
-%patch1 -p1
 %patch3 -p1
 %patch12 -p1 -b .lzma
 %patch13 -p1 -b .splash
-%patch14 -p1 -b .strfmt
-%patch15 -p1 -b .gcc
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
@@ -126,9 +120,9 @@ rm -rf %{buildroot}
 
 %files -f %{name}.lang
 %defattr (-,root,root)
-%doc BOOT-ROOT.txt BUGS AUTHORS ABOUT-NLS COPYING ChangeLog
-%doc FORMAT FUTURE README README.partimaged README.mdv
-%doc THANKS TODO
+%doc BUGS AUTHORS ABOUT-NLS COPYING ChangeLog
+%doc FORMAT README README.partimaged README.mdv
+%doc THANKS
 %{_sbindir}/*
 %{_sysconfdir}/sysconfig/partimaged
 %{_initrddir}/partimaged
