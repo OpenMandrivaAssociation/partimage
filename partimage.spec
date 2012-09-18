@@ -12,13 +12,13 @@ Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
-Patch12:	partimage-0.6.8-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
+Patch15:	partimage-0.6.9-lzma.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
-BuildRequires:	liblzmadec-devel
+BuildRequires:	liblzma-devel
 BuildRequires:	newt-devel
 BuildRequires:	openssl
 BuildRequires:	openssl-devel
@@ -58,9 +58,10 @@ installation is automatically made, and only require a few minutes.
 %prep
 %setup -q
 %patch3 -p1
-%patch12 -p1 -b .lzma
-%patch13 -p1 -b .splash
-%patch14 -p1 -b .gzfile_deref~
+%patch13 -p1 -b .gzfile_deref~
+%patch14 -p1 -b .splash~
+%patch15 -p1 -b .lzma~
+
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
