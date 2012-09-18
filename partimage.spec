@@ -1,7 +1,7 @@
 Summary: 	Partition Image
 Name: 		partimage
 Version: 	0.6.9
-Release: 	%mkrel 1
+Release: 	2
 URL: 		http://www.partimage.org/
 License: 	GPL
 Group: 		Archiving/Backup
@@ -14,6 +14,7 @@ Source5:	partimaged-init.d
 Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
 Patch12:	partimage-0.6.8-lzma.patch
 Patch13:	partimage-0.6.7-splash.patch
+Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
@@ -59,6 +60,7 @@ installation is automatically made, and only require a few minutes.
 %patch3 -p1
 %patch12 -p1 -b .lzma
 %patch13 -p1 -b .splash
+%patch14 -p1 -b .gzfile_deref~
 
 for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
 
