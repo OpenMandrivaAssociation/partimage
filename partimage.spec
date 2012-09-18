@@ -5,7 +5,7 @@ Release: 	3
 URL: 		http://www.partimage.org/
 License: 	GPL
 Group: 		Archiving/Backup
-Source: 	%{name}-%{version}.tar.bz2
+Source0: 	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
 Source3:	partimagedusers.5
@@ -21,6 +21,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
 BuildRequires:	liblzma-devel
 BuildRequires:	newt-devel
+BuildRequires:	slang-static-devel
 BuildRequires:	openssl
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
