@@ -105,11 +105,7 @@ installation is automatically made, and only require a few minutes.
 
 autoreconf -fi
 
-for i in %{_datadir}/automake-1.*/mkinstalldirs; do cp -f $i .; done
-
 %build
-cp %{_datadir}/gettext/config.rpath .
-
 CONFIGURE_TOP=$PWD
 
 %if %{with uclibc}
@@ -129,15 +125,12 @@ pushd glibc
 popd
 
 %install
-rm -rf  %{buildroot}
 %if %{with uclibc}
 %makeinstall_std -C uclibc
 rm -r %{buildroot}%{uclibc_root}%{_datadir}
 %endif
 
 %makeinstall_std -C glibc
-
-rm -rf %{buildroot}%{_infodir}/*
 
 install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
@@ -181,11 +174,7 @@ fi
 %preun
 %_preun_service partimaged
 
-%clean
-rm -rf %{buildroot}
-
 %files -f %{name}.lang
-%defattr (-,root,root)
 %doc BUGS AUTHORS ABOUT-NLS COPYING ChangeLog
 %doc FORMAT README README.partimaged README.mdv
 %doc THANKS
