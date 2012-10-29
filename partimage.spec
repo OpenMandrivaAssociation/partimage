@@ -29,7 +29,7 @@ BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
 BuildRequires:	rpm-helper >= 0.21
 %if %{with uclibc}
-BuildRequires:	uClibc-devel >= 0.9.33-16
+BuildRequires:	uClibc-devel >= 0.9.33.2-16
 BuildRequires:	uClibc++-devel
 %endif
 Requires:	openssl > 0.9.6
