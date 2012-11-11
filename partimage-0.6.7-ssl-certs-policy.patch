@@ -1,0 +1,14 @@
+diff -Naur partimage-0.6.7/src/shared/pathnames.h.in partimage-0.6.7-ssl-certs-policy/src/shared/pathnames.h.in
+--- partimage-0.6.7/src/shared/pathnames.h.in	2008-02-03 22:57:55.000000000 +0100
++++ partimage-0.6.7-ssl-certs-policy/src/shared/pathnames.h.in	2008-03-05 14:04:48.000000000 +0100
+@@ -22,8 +22,8 @@
+ #define PARTIMAGED_USERS "@SYSCONFDIR@/partimaged/partimagedusers"
+ 
+ // used by SSL.
+-#define CERTF "@SYSCONFDIR@/partimaged/partimaged.cert"
+-#define KEYF "@SYSCONFDIR@/partimaged/partimaged.key"
++#define CERTF "@SYSCONFDIR@/pki/tls/certs/partimage.pem"
++#define KEYF "@SYSCONFDIR@/pki/tls/private/partimage.pem"
+ 
+ // you can use CInterfaceNewt 
+ #define PARTIMAGE_INTERFACE CInterfaceNewt

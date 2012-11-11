@@ -1,0 +1,330 @@
+--- partimage-0.6.9/configure.ac.lzma~	2010-07-25 17:30:52.000000000 +0200
++++ partimage-0.6.9/configure.ac	2012-09-18 12:19:06.166623075 +0200
+@@ -91,6 +91,8 @@ if test "$efence_support" = "yes" ; then
+ fi
+ AC_CHECK_LIB([bz2], [BZ2_bzopen], [],
+    AC_MSG_ERROR([*** bzip2 library (libbz2) not found or too old: version 1.0.0 or more recent is need]))
++AC_CHECK_LIB([lzma], [lzma_auto_decoder], [],
++   AC_MSG_ERROR([*** liblzma library not found or too old]))
+ AC_CHECK_LIB([newt], [newtCenteredWindow], [],
+    AC_MSG_ERROR([*** newt library (libnewt) not found]))
+ AC_CHECK_LIB([z], [gzwrite], [],
+--- partimage-0.6.9/src/client/gui_text.cpp.lzma~	2012-09-18 12:19:06.158622974 +0200
++++ partimage-0.6.9/src/client/gui_text.cpp	2012-09-18 12:19:06.166623075 +0200
+@@ -960,6 +960,9 @@ void CRestoringWindow::showImageFileInfo
+ 	  SNPRINTF(szTemp, i18n("Compression level:................lzo"));
+           SNPRINTF(szTemp2, i18n("lzo"));
+ 	  break;
++	case COMPRESS_LZMA:
++	  SNPRINTF(szTemp, i18n("Compression level:................lzma"));
++	  break;
+ 	default:
+           memset(szTemp2, 0, sizeof(szTemp2));
+         SNPRINTF(szTemp3, i18n("Compression level:................%s"),szTemp2);
+--- partimage-0.6.9/src/client/imagefile.cpp.lzma~	2012-09-18 12:19:06.162623026 +0200
++++ partimage-0.6.9/src/client/imagefile.cpp	2012-09-18 12:20:46.167891977 +0200
+@@ -43,6 +43,7 @@
+ 
+ #include <zlib.h> // gzip compression
+ #include <bzlib.h> // bzip2 compression
++#include "../lzma_file.h" // lzma compression
+ 
+ CParam g_param;
+ 
+@@ -136,6 +137,7 @@ CImage::CImage(COptions * options)
+   m_fImageFile = NULL;	
+   m_gzImageFile = NULL;
+   m_bzImageFile = NULL;
++  m_lzmaImageFile = NULL;
+ 
+   RETURN;
+ }
+@@ -398,6 +400,10 @@ void CImage::read(char *cBuf, DWORD dwLe
+     nRes = gzread(*m_gzImageFile, cBuf, dwLength);
+   else if (m_options.dwCompression == COMPRESS_BZIP2)
+     nRes = BZ2_bzread(m_bzImageFile, cBuf, dwLength);
++  else if (m_options.dwCompression == COMPRESS_LZMA) {
++    lzma_ret ret;
++    nRes = lzma_read(&ret, m_lzmaImageFile, (uint8_t *)cBuf, dwLength);
++  }
+   else
+     THROW(ERR_COMP);
+ 
+@@ -580,6 +586,10 @@ void CImage::closeReading(bool bForceExi
+     }
+   else if (m_options.dwCompression == COMPRESS_BZIP2) // Bzip2 compression
+     BZ2_bzclose(m_bzImageFile);
++  else if (m_options.dwCompression == COMPRESS_LZMA) {// Lzma compression
++    lzma_ret ret;
++    lzma_close(&ret, m_lzmaImageFile);
++  }
+   if (nRes)
+     THROW(ERR_ERRNO, errno);
+ 
+@@ -611,6 +621,10 @@ void CImage::closeWriting()
+     nRes = gzclose(*m_gzImageFile);
+   else if (m_options.dwCompression == COMPRESS_BZIP2) // Bzip2 compression
+     BZ2_bzclose(m_bzImageFile);
++  else if (m_options.dwCompression == COMPRESS_LZMA) { // Lzma compression
++    lzma_ret ret;
++    lzma_close(&ret, m_lzmaImageFile);
++  }
+   if (nRes)
+     THROW(ERR_ERRNO, errno);
+   
+@@ -1112,6 +1126,15 @@ void CImage::openReading(CVolumeHeader *
+       else
+         showDebug(1, "bzip2 open\n");
+     }
++  else if (m_options.dwCompression == COMPRESS_LZMA) // Lzma compression
++    {
++      lzma_ret ret;
++      m_lzmaImageFile = lzma_open(&ret, NULL, m_nFdImage, -1);
++      if (m_lzmaImageFile == NULL)
++        THROW( errno);
++      else
++        showDebug(1, "lzma open\n");
++    }
+   else
+     THROW(ERR_COMP);
+ 
+--- partimage-0.6.9/src/client/imagefile.h.lzma~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/client/imagefile.h	2012-09-18 12:19:06.168623100 +0200
+@@ -43,6 +43,7 @@ class CImage
+   FILE *m_fImageFile;
+   gzFile *m_gzImageFile;
+   BZFILE *m_bzImageFile;
++  lzma_FILE *m_lzmaImageFile;
+ 
+   int m_nFdImage;
+ 
+--- partimage-0.6.9/src/client/image_net.h.lzma~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/client/image_net.h	2012-09-18 12:19:06.169623113 +0200
+@@ -26,6 +26,7 @@
+ 
+ #include <zlib.h> // gzip compression
+ #include <bzlib.h> // bzip2 compression
++#include "../lzma_file.h" // lzma compression
+ #include <pthread.h>
+ 
+ // ================================================
+--- partimage-0.6.9/src/client/partimage.h.lzma~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/client/partimage.h	2012-09-18 12:19:06.169623113 +0200
+@@ -146,6 +146,7 @@ extern bool g_bSigKill;
+ #define COMPRESS_GZIP    1
+ #define COMPRESS_BZIP2   2	
+ #define COMPRESS_LZO     3
++#define COMPRESS_LZMA    4	
+ 
+ // ENCRYPTION
+ #define ENCRYPT_NONE     0
+--- partimage-0.6.9/src/lzma_file.h.lzma~	2012-09-18 12:19:06.169623113 +0200
++++ partimage-0.6.9/src/lzma_file.h	2012-09-18 12:19:06.169623113 +0200
+@@ -0,0 +1,162 @@
++#ifndef _LZMA_FILE_
++#define _LZMA_FILE_
++
++#include <inttypes.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include <sys/types.h>
++
++#include <lzma.h>
++
++#define kBufferSize (1 << 15)
++
++typedef struct lzma_file {
++	uint8_t buf[kBufferSize];
++	lzma_stream strm;
++	int fd;
++	bool encoding;
++	bool eof;
++} lzma_FILE;
++
++static inline lzma_FILE *lzma_open(lzma_ret *lzma_error, lzma_filter *filters, int fd, uint64_t memlimit)
++{
++	lzma_ret *ret = lzma_error;
++	bool encoding = filters[0].options ? true : false;
++	lzma_FILE *lzma_file;
++    
++	lzma_file = (lzma_FILE*)calloc(1, sizeof(*lzma_file));
++
++	if (!lzma_file) {
++		close(fd);
++		return NULL;
++	}
++
++	lzma_file->fd = fd;
++	lzma_file->encoding = encoding;
++	lzma_file->eof = false;
++	lzma_stream tmp = LZMA_STREAM_INIT;
++	lzma_file->strm = tmp;
++
++	if (encoding) {
++		if(filters[0].id == LZMA_FILTER_LZMA1)
++			*ret = lzma_alone_encoder(&lzma_file->strm, (const lzma_options_lzma*)filters[0].options);
++		else
++			*ret = lzma_stream_encoder(&lzma_file->strm, filters, (lzma_check)filters[LZMA_FILTERS_MAX + 1].id);
++	} else
++		*ret = lzma_auto_decoder(&lzma_file->strm, memlimit, 0);
++
++	if (*ret != LZMA_OK) {
++		close(fd);
++		memset(lzma_file, 0, sizeof(*lzma_file));
++		free(lzma_file);
++		return NULL;
++	}
++	return lzma_file;
++}
++
++static inline int lzma_close_real(lzma_ret *lzma_error, lzma_FILE *lzma_file)
++{
++	lzma_ret *ret = lzma_error;	
++	int retval = 0;
++	size_t n;
++
++	if (!lzma_file)
++		return -1;
++	if (lzma_file->encoding) {
++		for (;;) {
++			lzma_file->strm.avail_out = kBufferSize;
++			lzma_file->strm.next_out = (uint8_t *)lzma_file->buf;
++			*ret = lzma_code(&lzma_file->strm, LZMA_FINISH);
++			if (*ret != LZMA_OK && *ret != LZMA_STREAM_END)
++			{
++				retval = -1;
++				break;
++			}
++			n = kBufferSize - lzma_file->strm.avail_out;
++			if (n && write(lzma_file->fd, lzma_file->buf, n) != n)
++			{
++				retval = -1;
++				break;
++			}
++			if (*ret == LZMA_STREAM_END)
++				break;
++		}
++	} else
++		*ret = LZMA_OK;
++
++	lzma_end(&lzma_file->strm);
++	return retval;
++}
++
++static int lzma_close(lzma_ret *lzma_error, lzma_FILE *lzma_file)
++{
++	int rc;
++	rc = lzma_close_real(lzma_error, lzma_file);
++	if(rc)
++		return rc;
++	rc = close(lzma_file->fd);
++	return rc;
++}
++
++static inline ssize_t lzma_read(lzma_ret *lzma_error, lzma_FILE *lzma_file, void *buf, size_t len)
++{
++	lzma_ret *ret = lzma_error;
++	bool eof = false;
++    
++	if (!lzma_file || lzma_file->encoding)
++		return -1;
++	if (lzma_file->eof)
++		return 0;
++
++	lzma_file->strm.next_out = (uint8_t*)buf;
++	lzma_file->strm.avail_out = len;
++	for (;;) {
++		if (!lzma_file->strm.avail_in) {
++			lzma_file->strm.next_in = (uint8_t *)lzma_file->buf;
++			lzma_file->strm.avail_in = read(lzma_file->fd, lzma_file->buf, kBufferSize);
++			if (!lzma_file->strm.avail_in)
++				eof = true;
++		}
++		*ret = lzma_code(&lzma_file->strm, LZMA_RUN);
++		if (*ret == LZMA_STREAM_END) {
++			lzma_file->eof = true;
++			return len - lzma_file->strm.avail_out;
++		}
++		if (*ret != LZMA_OK)
++			return -1;
++		if (!lzma_file->strm.avail_out)
++			return len;
++		if (eof)
++			return -1;
++	}
++}
++
++static inline ssize_t lzma_write(lzma_ret *lzma_error, lzma_FILE *lzma_file, void *buf, size_t len)
++{
++	lzma_ret *ret = lzma_error;
++	size_t n;
++
++	if (!lzma_file || !lzma_file->encoding)
++		return -1;
++	if (!len)
++		return 0;
++
++	lzma_file->strm.next_in = (uint8_t*)buf;
++	lzma_file->strm.avail_in = len;
++	for (;;) {
++		lzma_file->strm.next_out = (uint8_t *)lzma_file->buf;
++		lzma_file->strm.avail_out = kBufferSize;
++		*ret = lzma_code(&lzma_file->strm, LZMA_RUN);
++		if (*ret != LZMA_OK)
++			return -1;
++		n = kBufferSize - lzma_file->strm.avail_out;
++		if (n && write(lzma_file->fd, lzma_file->buf, n) != n)
++			return -1;
++		if (!lzma_file->strm.avail_in)
++			return len;
++	}
++}
++
++#endif
+--- partimage-0.6.9/src/shared/image_disk.cpp.lzma~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/shared/image_disk.cpp	2012-09-18 12:19:06.172623152 +0200
+@@ -328,16 +328,30 @@ int CImageDisk::getCompressionLevelForIm
+ checkBzip2:
+   bzImageFile = BZ2_bzopen(szFilename, "rb");
+   if (bzImageFile == NULL)
+-    goto checkNone;
++    goto checkLzma;
+   dwRes = BZ2_bzread(bzImageFile, &headVolume, sizeof(CVolumeHeader));
+   BZ2_bzclose(bzImageFile);
+   if (dwRes != sizeof(CVolumeHeader))
+-    goto checkNone;
++    goto checkLzma;
+   if (strncmp(headVolume.szMagicString, szLabel, strlen(szLabel)) == 0)
+     RETURN_int(COMPRESS_BZIP2);
+ 
+   showDebug(3, "TRACE_003\n");
+   
++  // ------ 1.1 Check for lzma compression
++checkLzma:
++  {	// Make sure it's lzma, otherwise the decoder crashes
++    uint8_t b[4];
++    FILE *f = fopen(szFilename, "rb");
++    fread(b, 4, 1, f);
++    fclose(f);
++    if (b[0] != 0x5d || b[1] != 0x00 || b[2] != 0x00)
++      goto checkNone;
++    RETURN_int(COMPRESS_LZMA);
++  }
++
++  showDebug(3, "TRACE_003\n");
++  
+   // ------ 2. Check for no compression
+  checkNone:
+   fImageFile = fopen(szFilename, "rb");
+--- partimage-0.6.9/src/shared/image_disk.h.lzma~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/shared/image_disk.h	2012-09-18 12:19:06.172623152 +0200
+@@ -25,6 +25,7 @@
+ 
+ #include <zlib.h> // gzip compression
+ #include <bzlib.h> // bzip2 compression
++#include "../lzma_file.h" // lzma compression
+ #include <string.h>
+ 
+ // ================================================

@@ -1,0 +1,7 @@
+sources:
+  "partimage-0.6.9.tar.bz2:"	3b9804b2289d7876835042a144d5fd1949aef1a4
+  "partimage.1:"	0a3e8beb82d0acf3d56473b454c64dea18275434
+  "partimaged.8:"	93fc49fac41f9bf82c8d1b72ca7e18cfbf375e80
+  "partimaged-init.d:"	bdd7c4536867957edaad640f826fe877230e28f8
+  "partimaged-sysconfig:"	b1bd274ccf80d37463851ea34c82201bfd6b6840
+  "partimagedusers.5:"	56afebd408dc14d3270a9a43702d335fa598998e

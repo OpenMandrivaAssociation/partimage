@@ -1,0 +1,38 @@
+--- partimage-0.6.9/src/client/imagefile.cpp.splash~	2010-07-25 17:30:31.000000000 +0200
++++ partimage-0.6.9/src/client/imagefile.cpp	2012-09-18 12:18:45.169356643 +0200
+@@ -345,7 +345,7 @@ void CImage::write(void *vBuf, DWORD dwL
+   if (m_options.dwCompression == COMPRESS_NONE)
+     dwRes = (DWORD) fwrite(cBuf, 1, dwLength, m_fImageFile);
+   else if (m_options.dwCompression == COMPRESS_GZIP)
+-    dwRes = (DWORD) gzwrite(m_gzImageFile, cBuf, dwLength);
++    dwRes = (DWORD) gzwrite(*m_gzImageFile, cBuf, dwLength);
+   else if (m_options.dwCompression == COMPRESS_BZIP2)
+     dwRes = (DWORD) BZ2_bzwrite(m_bzImageFile, cBuf, dwLength); 
+   else
+@@ -395,7 +395,7 @@ void CImage::read(char *cBuf, DWORD dwLe
+   if (m_options.dwCompression == COMPRESS_NONE)
+     nRes = fread(cBuf, 1, dwLength, m_fImageFile);
+   else if (m_options.dwCompression == COMPRESS_GZIP)
+-    nRes = gzread(m_gzImageFile, cBuf, dwLength);
++    nRes = gzread(*m_gzImageFile, cBuf, dwLength);
+   else if (m_options.dwCompression == COMPRESS_BZIP2)
+     nRes = BZ2_bzread(m_bzImageFile, cBuf, dwLength);
+   else
+@@ -575,7 +575,7 @@ void CImage::closeReading(bool bForceExi
+   else if (m_options.dwCompression == COMPRESS_GZIP) // Gzip compression
+     { 
+       char szTemp[2048];
+-      nRes = gzclose(m_gzImageFile);
++      nRes = gzclose(*m_gzImageFile);
+       showDebug(3, "GZCLOSE: result=%s\n", formatGzipError(nRes, szTemp, sizeof(szTemp)));
+     }
+   else if (m_options.dwCompression == COMPRESS_BZIP2) // Bzip2 compression
+@@ -608,7 +608,7 @@ void CImage::closeWriting()
+   if (m_options.dwCompression == COMPRESS_NONE) // No compression
+     nRes = fclose(m_fImageFile);	
+   else if (m_options.dwCompression == COMPRESS_GZIP) // Gzip compression
+-    nRes = gzclose(m_gzImageFile);
++    nRes = gzclose(*m_gzImageFile);
+   else if (m_options.dwCompression == COMPRESS_BZIP2) // Bzip2 compression
+     BZ2_bzclose(m_bzImageFile);
+   if (nRes)
