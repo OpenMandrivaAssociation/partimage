@@ -1,19 +1,19 @@
 %bcond_without	uclibc
 
-Summary: 	Partition Image
-Name: 		partimage
-Version: 	0.6.9
-Release: 	4
-URL: 		http://www.partimage.org/
-License: 	GPL
-Group: 		Archiving/Backup
-Source0: 	%{name}-%{version}.tar.bz2
+Summary:	Partition Image
+Name:		partimage
+Version:	0.6.9
+Release:	4
+URL:		http://www.partimage.org/
+License:	GPL
+Group:		Archiving/Backup
+Source0:	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
 Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
-Patch3: 	partimage-0.6.7-ssl-certs-policy.patch
+Patch3:		partimage-0.6.7-ssl-certs-policy.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
 Patch15:	partimage-0.6.9-lzma.patch
@@ -33,7 +33,7 @@ BuildRequires:	uClibc-devel >= 0.9.33.2-16
 BuildRequires:	uClibc++-devel
 %endif
 Requires:	openssl > 0.9.6
-Requires(post): rpm-helper >= 0.21
+Requires(post):	rpm-helper >= 0.21
 
 %description
 Partition Image is a Linux/UNIX partition imaging utility: it saves
@@ -65,7 +65,7 @@ installation is automatically made, and only require a few minutes.
 
 %package -n	uclibc-%{name}
 Summary:	Partition Image (uClibc build)
-Group: 		Archiving/Backup
+Group:		Archiving/Backup
 
 %description -n	uclibc-%{name}
 Partition Image is a Linux/UNIX partition imaging utility: it saves
