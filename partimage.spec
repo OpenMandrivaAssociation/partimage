@@ -106,7 +106,7 @@ installation is automatically made, and only require a few minutes.
 autoreconf -fi
 
 %build
-CONFIGURE_TOP=$PWD
+CONFIGURE_TOP="$PWD"
 
 %if %{with uclibc}
 mkdir -p uclibc
