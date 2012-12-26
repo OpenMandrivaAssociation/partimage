@@ -21,12 +21,12 @@ Patch16:	partimage-0.6.9-statically-link-partimage-against-libslang.patch
 BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
-BuildRequires:	liblzma-devel
-BuildRequires:	newt-devel
+BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	pkgconfig(libnewt)
 BuildRequires:	slang-static-devel
 BuildRequires:	openssl
-BuildRequires:	openssl-devel
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	rpm-helper >= 0.21
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
