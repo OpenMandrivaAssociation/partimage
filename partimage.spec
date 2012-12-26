@@ -3,7 +3,7 @@
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
-Release:	4
+Release:	2
 URL:		http://www.partimage.org/
 License:	GPL
 Group:		Archiving/Backup
