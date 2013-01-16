@@ -1,0 +1,19 @@
+--- partimage-0.6.9/configure.ac.bero	2013-01-16 01:59:22.206505386 +0100
++++ partimage-0.6.9/configure.ac	2013-01-16 01:59:31.939389148 +0100
+@@ -15,7 +15,7 @@ AC_CANONICAL_SYSTEM
+ AC_CONFIG_MACRO_DIR([m4])
+ AM_INIT_AUTOMAKE([1.6 dist-bzip2])
+ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+-AM_CONFIG_HEADER([config.h])
++AC_CONFIG_HEADERS([config.h])
+ 
+ AC_DEFINE(ENABLE_NLS, 1, [Enable translations])
+ 
+@@ -26,7 +26,6 @@ AM_GNU_GETTEXT([external])
+ AC_PROG_LIBTOOL
+ AC_ISC_POSIX
+ AC_PROG_CC
+-AM_PROG_CC_STDC
+ AC_HEADER_STDC
+ AC_PROG_AWK
+ AC_PROG_CXX

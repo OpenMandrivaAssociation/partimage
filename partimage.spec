@@ -13,6 +13,7 @@ Source2:	partimaged.8
 Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
+Patch0:		partimage-automake-1.13.patch
 Patch3:		partimage-0.6.7-ssl-certs-policy.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
@@ -97,12 +98,7 @@ installation is automatically made, and only require a few minutes.
 
 %prep
 %setup -q
-%patch3 -p1
-%patch13 -p1 -b .gzfile_deref~
-%patch14 -p1 -b .splash~
-%patch15 -p1 -b .lzma~
-%patch16 -p1 -b .slang_static~
-
+%apply_patches
 autoreconf -fi
 
 %build
