@@ -4,9 +4,9 @@ Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
 Release:	2
-URL:		http://www.partimage.org/
-License:	GPL
+License:	GPLv2
 Group:		Archiving/Backup
+Url:		http://www.partimage.org/
 Source0:	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
@@ -19,16 +19,13 @@ Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
 Patch15:	partimage-0.6.9-lzma.patch
 Patch16:	partimage-0.6.9-statically-link-partimage-against-libslang.patch
-BuildRequires:	automake1.8
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
+BuildRequires:	slang-static-devel
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libnewt)
-BuildRequires:	slang-static-devel
-BuildRequires:	openssl
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
-BuildRequires:	rpm-helper >= 0.21
 %if %{with uclibc}
 BuildRequires:	uClibc-devel >= 0.9.33.2-16
 BuildRequires:	uClibc++-devel
@@ -108,8 +105,8 @@ CONFIGURE_TOP="$PWD"
 mkdir -p uclibc
 pushd uclibc
 %uclibc_configure \
-		--disable-ssl \
-		--disable-pam
+	--disable-ssl \
+	--disable-pam
 %make
 popd
 %endif
@@ -187,3 +184,4 @@ fi
 %{uclibc_root}%{_sbindir}/partimage
 %{uclibc_root}%{_sbindir}/partimaged
 %endif
+
