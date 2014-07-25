@@ -101,6 +101,7 @@ autoreconf -fi
 %build
 CONFIGURE_TOP="$PWD"
 
+%global optflags %{optflags} -std=gnu++11
 %if %{with uclibc}
 mkdir -p uclibc
 pushd uclibc
