@@ -99,6 +99,9 @@ installation is automatically made, and only require a few minutes.
 autoreconf -fi
 
 %build
+export CC=gcc
+export CXX=g++
+
 CONFIGURE_TOP="$PWD"
 
 %global optflags %{optflags} -std=gnu++11
@@ -114,7 +117,7 @@ popd
 
 mkdir -p glibc
 pushd glibc
-%configure2_5x
+%configure
 %make
 popd
 
