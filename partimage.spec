@@ -1,9 +1,9 @@
-%bcond_without	uclibc
+%bcond_with	uclibc
 
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
-Release:	10
+Release:	11
 License:	GPLv2
 Group:		Archiving/Backup
 Url:		http://www.partimage.org/
@@ -61,6 +61,7 @@ machines: just install one of them, creat|e an image, and just restore
 the image on all other machines. Then, after the first one, each 
 installation is automatically made, and only require a few minutes.
 
+%if %{with uclibc}
 %package -n	uclibc-%{name}
 Summary:	Partition Image (uClibc build)
 Group:		Archiving/Backup
@@ -92,6 +93,7 @@ This is very useful when installing the same software on many
 machines: just install one of them, creat|e an image, and just restore 
 the image on all other machines. Then, after the first one, each 
 installation is automatically made, and only require a few minutes.
+%endif
 
 %prep
 %setup -q
