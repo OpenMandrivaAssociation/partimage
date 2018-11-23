@@ -1,0 +1,11 @@
+diff -Nru a/src/client/misc.cpp b/src/client/misc.cpp
+--- a/src/client/misc.cpp	2010-07-25 17:30:31.000000000 +0200
++++ b/src/client/misc.cpp	2018-11-05 06:49:01.475617814 +0100
+@@ -39,6 +39,7 @@
+ #endif
+ 
+ #include <ctype.h>
++#include <sys/sysmacros.h>
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+ #include <sys/mount.h>

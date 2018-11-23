@@ -19,6 +19,11 @@ Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
 Patch15:	partimage-0.6.9-lzma.patch
 Patch16:	partimage-0.6.9-statically-link-partimage-against-libslang.patch
+Patch17:        partimage-0.6.9-no-sslv2.patch
+# from debian: fix build config with openssl 1.1
+Patch18:        03-openssl11.patch
+Patch19:        partimage-0.6.9-sysmacros.patch
+
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
 BuildRequires:	slang-static-devel
@@ -104,32 +109,13 @@ autoreconf -fi
 export CC=gcc
 export CXX=g++
 
-CONFIGURE_TOP="$PWD"
-
 %global optflags %{optflags} -std=gnu++11
-%if %{with uclibc}
-mkdir -p uclibc
-pushd uclibc
-%uclibc_configure \
-	--disable-ssl \
-	--disable-pam
-%make
-popd
-%endif
 
-mkdir -p glibc
-pushd glibc
 %configure
 %make
-popd
 
 %install
-%if %{with uclibc}
-%makeinstall_std -C uclibc
-rm -r %{buildroot}%{uclibc_root}%{_datadir}
-%endif
-
-%makeinstall_std -C glibc
+%makeinstall_std
 
 install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
@@ -184,10 +170,3 @@ fi
 %{_mandir}/man1/partimage.1*
 %{_mandir}/man5/partimagedusers.5*
 %{_mandir}/man8/partimaged.8*
-
-%if %{with uclibc}
-%files -n uclibc-%{name}
-%{uclibc_root}%{_sbindir}/partimage
-%{uclibc_root}%{_sbindir}/partimaged
-%endif
-
