@@ -1,5 +1,3 @@
-%bcond_with	uclibc
-
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
@@ -18,7 +16,6 @@ Patch3:		partimage-0.6.7-ssl-certs-policy.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
 Patch15:	partimage-0.6.9-lzma.patch
-Patch16:	partimage-0.6.9-statically-link-partimage-against-libslang.patch
 Patch17:        partimage-0.6.9-no-sslv2.patch
 # from debian: fix build config with openssl 1.1
 Patch18:        03-openssl11.patch
@@ -26,15 +23,11 @@ Patch19:        partimage-0.6.9-sysmacros.patch
 
 BuildRequires:	bzip2-devel
 BuildRequires:	gettext-devel
-BuildRequires:	slang-static-devel
+#BuildRequires:	slang-static-devel
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libnewt)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
-%if %{with uclibc}
-BuildRequires:	uClibc-devel >= 0.9.33.2-16
-BuildRequires:	uClibc++-devel
-%endif
 Requires:	openssl > 0.9.6
 Requires(post):	rpm-helper >= 0.21
 
@@ -170,3 +163,4 @@ fi
 %{_mandir}/man1/partimage.1*
 %{_mandir}/man5/partimagedusers.5*
 %{_mandir}/man8/partimaged.8*
+%{_datadir}/doc/partimage/partimage.lsm
