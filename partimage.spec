@@ -1,7 +1,7 @@
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
-Release:	12
+Release:	13
 License:	GPLv2
 Group:		Archiving/Backup
 Url:		http://www.partimage.org/
@@ -21,7 +21,7 @@ Patch17:        partimage-0.6.9-no-sslv2.patch
 Patch18:        03-openssl11.patch
 Patch19:        partimage-0.6.9-sysmacros.patch
 
-BuildRequires:	bzip2-devel
+BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 #BuildRequires:	slang-static-devel
 BuildRequires:	pkgconfig(liblzma)
@@ -94,8 +94,7 @@ installation is automatically made, and only require a few minutes.
 %endif
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 autoreconf -fi
 
 %build
@@ -105,10 +104,10 @@ export CXX=g++
 %global optflags %{optflags} -std=gnu++11
 
 %configure
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 install -m644 %{SOURCE1} -D %{buildroot}%{_mandir}/man1/partimage.1
 install -m644 %{SOURCE2} -D %{buildroot}%{_mandir}/man8/partimaged.8
@@ -116,8 +115,8 @@ install -m644 %{SOURCE3} -D %{buildroot}%{_mandir}/man5/partimagedusers.5
 install -m644 %{SOURCE4} -D %{buildroot}%{_sysconfdir}/sysconfig/partimaged
 install -m755 %{SOURCE5} -D %{buildroot}%{_initrddir}/partimaged
 
-cat > README.mdv <<EOF
-Mandriva RPM specific notes
+cat > README.omv <<EOF
+OpenMandriva RPM specific notes
 
 setup
 -----
@@ -154,7 +153,7 @@ fi
 
 %files -f %{name}.lang
 %doc BUGS AUTHORS ABOUT-NLS COPYING ChangeLog
-%doc FORMAT README README.partimaged README.mdv
+%doc FORMAT README README.partimaged README.omv
 %doc THANKS
 %{_sbindir}/*
 %{_sysconfdir}/sysconfig/partimaged
