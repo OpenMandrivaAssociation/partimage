@@ -4,7 +4,7 @@ Version:	0.6.9
 Release:	14
 License:	GPLv2
 Group:		Archiving/Backup
-Url:		http://www.partimage.org/
+Url:		https://www.partimage.org/
 Source0:	%{name}-%{version}.tar.bz2
 Source1:	partimage.1
 Source2:	partimaged.8
