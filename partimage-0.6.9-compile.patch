@@ -1,0 +1,190 @@
+diff -up partimage-0.6.9/src/client/fs/fs_base.cpp.omv~ partimage-0.6.9/src/client/fs/fs_base.cpp
+--- partimage-0.6.9/src/client/fs/fs_base.cpp.omv~	2024-10-22 17:25:35.167875241 +0200
++++ partimage-0.6.9/src/client/fs/fs_base.cpp	2024-10-22 17:25:49.408074820 +0200
+@@ -730,10 +730,10 @@ int CFSBase::getStdInfos(char *szDest, i
+ 
+   if (bShowBlocksInfo)
+     {
+-      SNPRINTF(szBlocksInfo, i18n("Block size:...................%"PRIu64" bytes\n"
+-				  "Total blocks count:...........%"PRIu64"\n"
+-				  "Used blocks count:............%"PRIu64"\n"
+-				  "Free blocks count:............%"PRIu64"\n"),
++      SNPRINTF(szBlocksInfo, i18n("Block size:...................%" PRIu64 " bytes\n"
++				  "Total blocks count:...........%" PRIu64 "\n"
++				  "Used blocks count:............%" PRIu64 "\n"
++				  "Free blocks count:............%" PRIu64 "\n"),
+ 	       m_header.qwBlockSize, 
+ 	       m_header.qwBlocksCount,
+ 	       m_header.qwUsedBlocks,
+@@ -745,7 +745,7 @@ int CFSBase::getStdInfos(char *szDest, i
+     }
+  
+   snprintf(szDest, nMaxLen, i18n("%s" // Blocks infos
+-				 "Space usage:..................%"PRIu64" %%\n"
++				 "Space usage:..................%" PRIu64 " %%\n"
+ 				 "Used space:...................%s\n"
+ 				 "Free space:...................%s\n"
+ 				 "Bitmap size:..................%s\n"
+diff -up partimage-0.6.9/src/client/fs/fs_hfs.cpp.omv~ partimage-0.6.9/src/client/fs/fs_hfs.cpp
+--- partimage-0.6.9/src/client/fs/fs_hfs.cpp.omv~	2024-10-22 17:26:18.538479227 +0200
++++ partimage-0.6.9/src/client/fs/fs_hfs.cpp	2024-10-22 17:26:25.218571257 +0200
+@@ -142,10 +142,10 @@ void CHfsPart::printfInformations()
+   getStdInfos(szText, sizeof(szText), true);
+   
+   SNPRINTF(szFullText, i18n("%s" // standard infos
+-			    "Allocation Group count:.......%"PRIu64"\n"
++			    "Allocation Group count:.......%" PRIu64 "\n"
+ 			    "Blocks per Allocation Group:..%u\n"
+ 			    "Allocation Group size:........%s\n"
+-			    "First allocation block:.......%"PRIu64"\n"),
++			    "First allocation block:.......%" PRIu64 "\n"),
+ 	   szText, m_info.qwAllocCount, m_info.dwBlocksPerAlloc,
+ 	   formatSize(m_info.dwAllocSize,szTemp1), m_info.qwFirstAllocBlock);
+     
+diff -up partimage-0.6.9/src/client/fs/fs_ntfs.cpp.omv~ partimage-0.6.9/src/client/fs/fs_ntfs.cpp
+--- partimage-0.6.9/src/client/fs/fs_ntfs.cpp.omv~	2024-10-22 17:26:00.198225210 +0200
++++ partimage-0.6.9/src/client/fs/fs_ntfs.cpp	2024-10-22 17:26:08.848345265 +0200
+@@ -312,7 +312,7 @@ void CNtfsPart::printfInformations()
+ 			    "Bytes per sector:.............%u\n"
+ 			    "Sectors per cluster:..........%u\n"
+ 			    "File record size:.............%u\n"
+-			    "LCN of MFT Data attrib:.......%"PRIu64"\n"),
++			    "LCN of MFT Data attrib:.......%" PRIu64 "\n"),
+ 	   szText, m_info.nBytesPerSector, m_info.cSectorsPerCluster, 
+ 	   m_info.dwFileRecordSize, m_info.qwLCNOfMftDataAttrib);
+     
+@@ -730,7 +730,7 @@ void CNtfsRunList::show()
+   QWORD i;
+   
+   for (i=0L; i < m_qwClustersCount; i++)
+-    fprintf(stderr, "cluster[%llu] = %"PRIu64"\n", (long long unsigned int)i, m_qwOffset[i]);
++    fprintf(stderr, "cluster[%llu] = %" PRIu64 "\n", (long long unsigned int)i, m_qwOffset[i]);
+   
+ }
+ 
+diff -up partimage-0.6.9/src/client/fs/fs_ufs.cpp.omv~ partimage-0.6.9/src/client/fs/fs_ufs.cpp
+--- partimage-0.6.9/src/client/fs/fs_ufs.cpp.omv~	2024-10-22 17:26:33.768688672 +0200
++++ partimage-0.6.9/src/client/fs/fs_ufs.cpp	2024-10-22 17:26:39.188762893 +0200
+@@ -217,7 +217,7 @@ void CUfsPart::printfInformations()
+ 			    "Cylinder group size:..........%s\n"
+ 			    "Basic blocks per CG:..........%u\n"
+ 			    "Basic block size:.............%u\n"
+-			    "Data frags count:.............%"PRIu64"\n"),
++			    "Data frags count:.............%" PRIu64 "\n"),
+ 	   szText, m_info.dwCylinderGroupsCount, 
+ 	   formatSize(m_info.dwCylinderGroupSize*m_info.dwBasicBlockSize,szTemp1),
+ 	   m_info.dwCylinderGroupSize, m_info.dwBasicBlockSize, m_info.qwDataFrags);
+diff -up partimage-0.6.9/src/client/gui_text.cpp.omv~ partimage-0.6.9/src/client/gui_text.cpp
+--- partimage-0.6.9/src/client/gui_text.cpp.omv~	2024-10-22 17:27:24.909382584 +0200
++++ partimage-0.6.9/src/client/gui_text.cpp	2024-10-22 17:27:40.519591662 +0200
+@@ -346,7 +346,7 @@ int CSaveOptWindow::create(char *szImage
+   m_labelSplit = newtLabel(1, 12, i18n("Image split mode"));
+   m_radioSplitAuto = newtRadiobutton(1, 13, i18n("Automatic split (when no space left)"), !options.qwSplitSize, NULL);
+   m_radioSplitSize = newtRadiobutton(1, 14, i18n("Into files whose size is:............"), !!options.qwSplitSize, m_radioSplitAuto);
+-  SNPRINTF(szTemp, "%"PRIu64"", (!!options.qwSplitSize) ? (options.qwSplitSize/1024/1024) : 2048);
++  SNPRINTF(szTemp, "%" PRIu64 "", (!!options.qwSplitSize) ? (options.qwSplitSize/1024/1024) : 2048);
+   m_editSplitSize = newtEntry(43, 14, szTemp, 8, NULL, 0);
+   m_labelSplitSizeKB = newtLabel(52, 14, i18n("MiB"));
+   m_checkSplitWait = newtCheckbox(1, 15, i18n("Wait after each volume change"), (!!options.bSplitWait ? 'X' : ' '), " X", NULL);
+@@ -467,7 +467,7 @@ int CSavingWindow::create(const char *sz
+   SNPRINTF(szTemp, i18n("Partition to save:...........%s"), szDevice);
+   m_labelPartition = newtLabel(1, 0, szTemp);
+   
+-  SNPRINTF(szTemp, i18n("Size of the Partition:.......%s = %"PRIu64" bytes"), formatSize(qwPartSize, szTemp2), qwPartSize);
++  SNPRINTF(szTemp, i18n("Size of the Partition:.......%s = %" PRIu64 " bytes"), formatSize(qwPartSize, szTemp2), qwPartSize);
+   m_labelPartitionSize = newtLabel(1, 1, szTemp);
+   
+   SNPRINTF(szTemp, i18n("Image file to create:........%s"), szImageFile);
+@@ -615,7 +615,7 @@ void CSavingWindow::showImageFileInfo(ch
+       newtLabelSetText(m_labelImageFileSize, szTemp);
+     }
+   
+-  SNPRINTF (szTemp, i18n("Available space for image:...%s = %"PRIu64" bytes"), formatSize(qwFreeSpace, szTemp2), qwFreeSpace);
++  SNPRINTF (szTemp, i18n("Available space for image:...%s = %" PRIu64 " bytes"), formatSize(qwFreeSpace, szTemp2), qwFreeSpace);
+   newtLabelSetText(m_labelFreeSpace, szTemp);
+ 
+   //option -B gui=no
+@@ -739,7 +739,7 @@ int CRestoringWindow::create(char *szDev
+   SNPRINTF(szTemp, i18n("Partition to restore:.............%s"), szDevice);
+   m_labelPartition = newtLabel(1, 0, szTemp);
+   
+-  SNPRINTF(szTemp, i18n("Size of partition to restore:.....%s = %"PRIu64" bytes"), formatSize(qwCurPartSize, szTemp2), qwCurPartSize);
++  SNPRINTF(szTemp, i18n("Size of partition to restore:.....%s = %" PRIu64 " bytes"), formatSize(qwCurPartSize, szTemp2), qwCurPartSize);
+   m_labelPartitionSize = newtLabel(1, 1, szTemp);
+   
+   SNPRINTF(szTemp, i18n("Image file to use:................%s"), szImageFile);
+@@ -756,7 +756,7 @@ int CRestoringWindow::create(char *szDev
+   SNPRINTF(szTemp, i18n("Image created on:.................%s\n"), asctime_portable(&dateCreate));
+   m_labelDate = newtLabel(1, 6, szTemp);
+ 
+-  SNPRINTF(szTemp, i18n("Size of the original partition:...%s = %"PRIu64" bytes"), formatSize(qwOrigPartSize, szTemp2), qwOrigPartSize);
++  SNPRINTF(szTemp, i18n("Size of the original partition:...%s = %" PRIu64 " bytes"), formatSize(qwOrigPartSize, szTemp2), qwOrigPartSize);
+   m_labelOriginalPartitionSize = newtLabel(1, 7, szTemp);
+ 
+   // stats
+diff -up partimage-0.6.9/src/client/imginfo.cpp.omv~ partimage-0.6.9/src/client/imginfo.cpp
+--- partimage-0.6.9/src/client/imginfo.cpp.omv~	2024-10-22 17:27:49.199707394 +0200
++++ partimage-0.6.9/src/client/imginfo.cpp	2024-10-22 17:28:06.229933397 +0200
+@@ -111,7 +111,7 @@ void imageInfoShowMBR(char *szText, int
+ {
+   snprintf(szText, nMaxTextLen, i18n("-------------------- MBR %.3d -------------------\n"
+ 				     "Device:................%s\n"
+-				     "Device blocks count:...%"PRIu64"\n"
++				     "Device blocks count:...%" PRIu64 "\n"
+ 				     "Device model:..........%s\n\n"),
+ 	   i, mbr->szDevice, mbr->qwBlocksCount, mbr->szDescModel);
+ }
+@@ -153,7 +153,7 @@ void imageInfoShowVolume(char *szText, i
+   snprintf(szText, nMaxTextLen, i18n("Volume number:.........%u\n"
+ 				     "Volume size:...........%s\n"
+ 				     "Compression level: ....%d -> %s\n"
+-				     "Identificator:.........%"PRIu64"=%"PRIX64"\n\n"),
++				     "Identificator:.........%" PRIu64 "=%" PRIX64 "\n\n"),
+ 	   head->dwVolumeNumber, formatSize(qwImageSize, cTemp), dwCompression, 
+ 	   szCompression, head->qwIdentificator, head->qwIdentificator);
+ }
+diff -up partimage-0.6.9/src/client/main.cpp.omv~ partimage-0.6.9/src/client/main.cpp
+--- partimage-0.6.9/src/client/main.cpp.omv~	2024-10-22 17:27:05.209116938 +0200
++++ partimage-0.6.9/src/client/main.cpp	2024-10-22 17:27:08.879166579 +0200
+@@ -301,7 +301,7 @@ int main(int argc, char *argv[])
+ 	  case 'V': // split image into multiple files
+ 	  
+ 	    options.qwSplitSize = (QWORD)atol(optarg) * 1024 * 1024;
+-	    fprintf (stderr, i18n("Volume size: %"PRIu64" bytes (%ld MiB)\n"),
++	    fprintf (stderr, i18n("Volume size: %" PRIu64 " bytes (%ld MiB)\n"),
+ 		     options.qwSplitSize, atol(optarg));
+ 	    break;
+ 	  
+diff -up partimage-0.6.9/src/client/misc.cpp.omv~ partimage-0.6.9/src/client/misc.cpp
+--- partimage-0.6.9/src/client/misc.cpp.omv~	2024-10-22 17:26:50.698919961 +0200
++++ partimage-0.6.9/src/client/misc.cpp	2024-10-22 17:26:54.168967172 +0200
+@@ -212,7 +212,7 @@ void restoreMbr(char *szImageFile, COpti
+ 	  image.closeReading(true);
+           throw excep;
+ 	}
+-      SNPRINTF(szTemp, "%.3u: %s [%"PRIu64" blocks]", i, mbrOriginal[i].szDevice, mbrOriginal[i].qwBlocksCount);
++      SNPRINTF(szTemp, "%.3u: %s [%" PRIu64 " blocks]", i, mbrOriginal[i].szDevice, mbrOriginal[i].qwBlocksCount);
+       if (options->bBatchMode == false)
+ 	optGui.addMbr(szTemp, i);
+       
+diff -up partimage-0.6.9/src/shared/common.cpp.omv~ partimage-0.6.9/src/shared/common.cpp
+--- partimage-0.6.9/src/shared/common.cpp.omv~	2024-10-22 17:24:59.747373157 +0200
++++ partimage-0.6.9/src/shared/common.cpp	2024-10-22 17:25:17.227621971 +0200
+@@ -272,7 +272,7 @@ char *formatSize2(QWORD qwSize, char *sz
+   
+   if (qwSize < llKiloB) // In Bytes
+     {
+-      snprintf(szText, nMaxLen, i18n("%"PRId64" bytes"), qwSize);
++      snprintf(szText, nMaxLen, i18n("%" PRId64 " bytes"), qwSize);
+     }
+   else if (qwSize < llMegaB) // In KiloBytes
+     {
+@@ -311,7 +311,7 @@ char *formatSizeNoGui(QWORD qwSize, char
+ 
+   if (qwSize < llKiloB) // In Bytes
+     {
+-      snprintf(szText, nMaxLen, i18n("%"PRId64" Bytes"), qwSize);
++      snprintf(szText, nMaxLen, i18n("%" PRId64 " Bytes"), qwSize);
+     }
+   else if (qwSize < llMegaB) // In KiloBytes
+     {

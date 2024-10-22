@@ -1,7 +1,7 @@
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
-Release:	14
+Release:	15
 License:	GPLv2
 Group:		Archiving/Backup
 Url:		https://www.partimage.org/
@@ -12,6 +12,7 @@ Source3:	partimagedusers.5
 Source4:	partimaged-sysconfig
 Source5:	partimaged-init.d
 Patch0:		partimage-automake-1.13.patch
+Patch1:		partimage-0.6.9-compile.patch
 Patch3:		partimage-0.6.7-ssl-certs-policy.patch
 Patch13:	partimage-0.6.7-splash.patch
 Patch14:	partimage-0.6.9-dereference-gzFile-pointer.patch
@@ -29,7 +30,6 @@ BuildRequires:	pkgconfig(libnewt)
 BuildRequires:	pkgconfig(openssl)
 BuildRequires:	pkgconfig(zlib)
 Requires:	openssl > 0.9.6
-Requires(post):	rpm-helper >= 0.21
 
 %description
 Partition Image is a Linux/UNIX partition imaging utility: it saves
@@ -98,11 +98,7 @@ installation is automatically made, and only require a few minutes.
 autoreconf -fi
 
 %build
-export CC=gcc
-export CXX=g++
-
-%global optflags %{optflags} -std=gnu++11
-
+%global build_cxxflags %{build_cxxflags} -std=gnu++11
 %configure
 %make_build
 
@@ -130,9 +126,11 @@ EOF
 
 %find_lang %{name}
 
-%pre
-/usr/sbin/groupadd -r -f partimag > /dev/null 2>&1 ||:
-/usr/sbin/useradd -g partimag -d /home/partimag -r -s /bin/bash partimag > /dev/null 2>&1 ||:
+mkdir -p %{buildroot}%{_sysusersdir}
+cat >%{buildroot}%{_sysusersdir}/%{name}.conf <<EOF
+g partimag - -
+u partimag - "Partimag" %{_localstatedir}/lib/partimag /bin/bash
+EOF
 
 %post
 dir=/var/lib/partimage
@@ -157,6 +155,7 @@ fi
 %doc THANKS
 %{_sbindir}/*
 %{_sysconfdir}/sysconfig/partimaged
+%{_sysusersdir}/%{name}.conf
 %{_initrddir}/partimaged
 %attr(0600,partimag,partimag) %config(noreplace) %{_sysconfdir}/partimaged/partimagedusers
 %{_mandir}/man1/partimage.1*
