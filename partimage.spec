@@ -22,6 +22,11 @@ Patch17:        partimage-0.6.9-no-sslv2.patch
 Patch18:        03-openssl11.patch
 Patch19:        partimage-0.6.9-sysmacros.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	gettext-devel
 #BuildRequires:	slang-static-devel
