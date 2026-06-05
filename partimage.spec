@@ -1,7 +1,7 @@
 Summary:	Partition Image
 Name:		partimage
 Version:	0.6.9
-Release:	15
+Release:	16
 License:	GPLv2
 Group:		Archiving/Backup
 Url:		https://www.partimage.org/
